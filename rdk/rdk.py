@@ -2150,6 +2150,16 @@ class rdk:
         } ]
         lambda_role["Properties"]["ManagedPolicyArns"] = [{"Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/ReadOnlyAccess"}]
         resources["rdkLambdaRole"] = lambda_role
+        
+        ssm_stack_name = {}
+        ssm_stack_name["Type"] = "AWS::SSM::Parameter"
+        ssm_stack_name["Properties"] = {}
+        ssm_stack_name["Properties"]["Description"] = "RDK Stack Name SSM Parameter"
+        ssm_stack_name["Properties"]["Name"] = "/org/cac_compliace_ruleset_latest_installed/cac_config_rules_stack_name"
+        ssm_stack_name["Properties"]["Type"] = "String"
+        ssm_stack_name["Properties"]["Value"] = {"Ref":"AWS::StackName"}
+        resources["StackNameSSMPARAM"] = ssm_stack_name
+
 
         rule_names = self.__get_rule_list_for_command()
         for rule_name in rule_names:
